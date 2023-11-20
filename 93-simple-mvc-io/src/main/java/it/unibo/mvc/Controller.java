@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Objects;
 
 /**
  * Application controller. Performs the I/O.
@@ -24,7 +25,7 @@ public class Controller {
     }
 
     public void setFile(final File file) {
-        this.file = file;
+        this.file = !Objects.isNull(file) ? file : new File(DEFAULT_PATH);
     }
 
     public Controller(){
