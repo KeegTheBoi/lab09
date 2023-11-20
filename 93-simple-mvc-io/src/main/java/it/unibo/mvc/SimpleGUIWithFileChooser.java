@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.GroupLayout.Alignment;
 
 
 /**
@@ -35,24 +36,22 @@ public final class SimpleGUIWithFileChooser {
         final JButton browseButton = new JButton("Browse..");
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        final JPanel inputSave= new JPanel();
-        final JPanel flowBrowse = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        final JPanel textflowTextBrowse = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        inputSave.setLayout(new BorderLayout());
-        canvas.add(inputSave, BorderLayout.CENTER);
-        inputSave.add(saveButton, BorderLayout.SOUTH);
-        inputSave.add(flowBrowse, BorderLayout.EAST);
-        inputSave.add(textflowTextBrowse, BorderLayout.NORTH);
+        final JPanel borderSave= new JPanel();
+        final JPanel flowBrowse = new JPanel(new BorderLayout());
+        flowBrowse.add(browseButton, BorderLayout.EAST);
+        borderSave.setLayout(new BorderLayout());
+        canvas.add(borderSave, BorderLayout.CENTER);
+        borderSave.add(saveButton, BorderLayout.SOUTH);
+        borderSave.add(flowBrowse, BorderLayout.NORTH);
         /*
          * Handlers
          */
         final JTextArea txtInput = new JTextArea();
-        final JTextArea chooseFile = new JTextArea();
-        chooseFile.setEditable(false);
-        chooseFile.setText(myController.getFilePath());
-        textflowTextBrowse.add(chooseFile);
-        flowBrowse.add(browseButton);
-        inputSave.add(txtInput, BorderLayout.CENTER);
+        final JTextArea txtBrowse = new JTextArea();
+        txtBrowse.setEditable(false);
+        txtBrowse.setText(myController.getFilePath());
+        flowBrowse.add(txtBrowse, BorderLayout.CENTER);
+        borderSave.add(txtInput, BorderLayout.CENTER);
 
 
         saveButton.addActionListener(new ActionListener() {
@@ -71,16 +70,11 @@ public final class SimpleGUIWithFileChooser {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                String filename = File.separator+"tmp";
-                JFileChooser fc = new JFileChooser(new File(filename));
-
-                // Show open dialog; this method does not return until the dialog is closed
-                fc.showOpenDialog(frame);
-              
+                JFileChooser fc = new JFileChooser();              
                 // Show save dialog; this method does not return until the dialog is closed
                 fc.showSaveDialog(frame);
                 myController.setFile(fc.getSelectedFile());
-                chooseFile.setText(myController.getFilePath());
+                txtBrowse.setText(myController.getFilePath());
             }
             
         });

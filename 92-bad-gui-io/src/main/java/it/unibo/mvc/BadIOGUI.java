@@ -46,9 +46,9 @@ public class BadIOGUI {
         //### Ex 01.01
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        final JPanel ioPane= new JPanel();
+        final JPanel ioPane= new JPanel(new BorderLayout());
         canvas.add(ioPane, BorderLayout.CENTER);
-        ioPane.setLayout(new BoxLayout(ioPane, BoxLayout.LINE_AXIS));
+        ioPane.setLayout(new BoxLayout(ioPane, BoxLayout.X_AXIS));
         ioPane.add(write, BorderLayout.CENTER);
         //### Ex 01.02
         final JButton read = new JButton("Read from File");
