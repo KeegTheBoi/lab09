@@ -1,0 +1,6 @@
+*.class
+bin/
+.gradle
+.metals
+.vscode
+build/
