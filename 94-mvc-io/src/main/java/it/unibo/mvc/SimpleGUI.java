@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.function.Consumer;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -55,7 +57,14 @@ public final class SimpleGUI {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                System.out.println("History\n" + myController.history());               
+                StringBuilder build = new StringBuilder();
+                myController.history().forEach(new Consumer<String>() {
+                    @Override
+                    public void accept(String arg0) {
+                        build.append(arg0 + "\n");
+                    }
+                });              
+                txtInput.setText(build.toString());
             }
             
         });
