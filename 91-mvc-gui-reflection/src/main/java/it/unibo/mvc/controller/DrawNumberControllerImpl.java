@@ -5,7 +5,7 @@ import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.api.DrawNumberView;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 
 /**
@@ -24,13 +24,12 @@ public final class DrawNumberControllerImpl implements DrawNumberController {
      */
     public DrawNumberControllerImpl(final DrawNumber model) {
         this.model = model;
-        views = new HashSet<>();
+        views = new LinkedHashSet<>();
     }
 
     @Override
     public void addView(final DrawNumberView view) {
         Objects.requireNonNull(view, "Cannot set a null view");
-       
         this.views.add(view);
         view.setController(this);
         view.start();
@@ -38,7 +37,7 @@ public final class DrawNumberControllerImpl implements DrawNumberController {
 
     @Override
     public void newAttempt(final int n) {
-        for (DrawNumberView view : views) {
+        for (DrawNumberView view: views) {
             Objects.requireNonNull(view, "There is no view attached!").result(model.attempt(n));
         }        
     }

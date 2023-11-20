@@ -11,10 +11,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
@@ -42,9 +43,16 @@ public class BadIOGUI {
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
         final JButton write = new JButton("Write on file");
-        canvas.add(write, BorderLayout.CENTER);
+        //### Ex 01.01
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        final JPanel ioPane= new JPanel();
+        canvas.add(ioPane, BorderLayout.CENTER);
+        ioPane.setLayout(new BoxLayout(ioPane, BoxLayout.LINE_AXIS));
+        ioPane.add(write, BorderLayout.CENTER);
+        //### Ex 01.02
+        final JButton read = new JButton("Read from File");
+        ioPane.add(read);
         /*
          * Handlers
          */
@@ -58,13 +66,32 @@ public class BadIOGUI {
                  * operation. I/O operations may take a long time, during which
                  * your UI becomes completely unresponsive.
                  */
-                try (PrintStream ps = new PrintStream(PATH, StandardCharsets.UTF_8)) {
-                    ps.print(randomGenerator.nextInt());
+                try (PrintStream ps = new PrintStream( new FileOutputStream(PATH, true))) {
+                    final int randomNum = randomGenerator.nextInt();
+                    ps.println(String.valueOf(randomNum));
+                    System.out.println("Stampa: " + randomNum);
+                    ps.close();
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, e1, "Error", JOptionPane.ERROR_MESSAGE);
                     e1.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
+        });
+        read.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                try{
+                    final List<String> readFiles = Files.readAllLines(Path.of(PATH));
+                    for (final String line : readFiles) {
+                        System.out.println("Reading: " + line);
+                    }
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, e1, "Error", JOptionPane.ERROR_MESSAGE);
+                    e1.printStackTrace(); 
+                }
+            }
+            
         });
     }
 
